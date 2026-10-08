@@ -216,7 +216,7 @@ export function ContactForm({ compact = false, className }: ContactFormProps) {
           )}
         </button>
         <p className="label max-w-[26ch] text-[0.55rem] leading-relaxed">
-          NO NEWSLETTER, NO CRM. THIS GOES STRAIGHT TO {siteConfig.contactEndpoint.trim() ? "YOUR INBOX" : "A MOCK HANDLER"}.
+          NO NEWSLETTER, NO CRM. THIS GOES STRAIGHT TO {siteConfig.email.toUpperCase()}.
         </p>
       </div>
     </form>

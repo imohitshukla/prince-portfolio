@@ -69,7 +69,7 @@ export default function Contact() {
         <div className="border-t border-line-soft">
           <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-10">
             <p className="label text-[0.55rem]">
-              FORM POSTS TO {siteConfig.contactEndpoint.trim() ? "VITE_CONTACT_ENDPOINT" : "A MOCK HANDLER — SET VITE_CONTACT_ENDPOINT TO GO LIVE"}
+              FORM GOES STRAIGHT TO {siteConfig.email.toUpperCase()}
             </p>
             <p className="text-xs text-ink-3">
               Prefer video? Record a 60-second brief and send it to{" "}
