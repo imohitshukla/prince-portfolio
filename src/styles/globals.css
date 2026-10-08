@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+/* ============================================================
+   PRINCE — design tokens
+   Tailwind v4 theme layer. Colours are exposed as utilities:
+   bg-bg, bg-surface, text-ink, text-ink-2, border-line, bg-accent …
+   ============================================================ */
+@theme {
+  --font-display: "Space Grotesk", "Trebuchet MS", ui-sans-serif, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+
+  --color-bg: #080808;
+  --color-bg-2: #111111;
+  --color-surface: #151515;
+  --color-elevated: #1b1b1b;
+  --color-ink: #f5f5f5;
+  --color-ink-2: #a1a1aa;
+  --color-ink-3: #6b6b73;
+  --color-line: rgba(255, 255, 255, 0.12);
+  --color-line-soft: rgba(255, 255, 255, 0.07);
+  --color-accent: #7c5cff;
+  --color-accent-glow: rgba(124, 92, 255, 0.2);
+  --color-warm: #e2a679;
+
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.4, 0, 0.1, 1);
+
+  --z-canvas: 0;
+  --z-nav: 60;
+  --z-panel: 80;
+  --z-detail: 100;
+  --z-cursor: 120;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: #2a2a2e transparent;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+
+  ::selection {
+    background: rgba(124, 92, 255, 0.34);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  button:not(:disabled),
+  a,
+  summary,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0b0b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2e;
+    border: 3px solid #0b0b0b;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3b3b42;
+  }
+}
+
+@layer components {
+  /* Uppercase editorial label */
+  .label {
+    font-family: var(--font-display);
+    font-size: 0.65625rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  .label-live {
+    color: var(--color-ink-2);
+  }
+
+  /* Thin hairline used across sections */
+  .rule {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.14) 12%,
+      rgba(255, 255, 255, 0.14) 88%,
+      transparent
+    );
+  }
+
+  /* Buttons */
+  .btn {
+    --btn-shift: 0px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    padding: 0.85rem 1.45rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition:
+      transform 0.5s var(--ease-cine),
+      background-color 0.35s ease,
+      color 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.5s var(--ease-cine);
+    transform: translateY(var(--btn-shift));
+    will-change: transform;
+  }
+
+  .btn-primary {
+    background: var(--color-ink);
+    color: #0a0a0a;
+    box-shadow: 0 14px 40px -18px rgba(255, 255, 255, 0.45);
+  }
+  .btn-primary:hover {
+    --btn-shift: -2px;
+    box-shadow:
+      0 22px 60px -18px rgba(255, 255, 255, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.9);
+  }
+
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(6px);
+  }
+  .btn-ghost:hover {
+    --btn-shift: -2px;
+    background: rgba(124, 92, 255, 0.12);
+    border-color: rgba(124, 92, 255, 0.55);
+  }
+
+  /* 3D primitive: children read --tilt-* custom properties */
+  .tilt {
+    transform: perspective(var(--tilt-persp, 1000px)) rotateX(var(--tilt-rx, 0deg))
+      rotateY(var(--tilt-ry, 0deg)) scale(var(--tilt-scale, 1));
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .tilt-z {
+    transform: translateZ(var(--tilt-z, 0px));
+  }
+
+  .lift {
+    transition:
+      transform 0.6s var(--ease-cine),
+      border-color 0.4s ease,
+      background-color 0.5s ease;
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .media-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Missing-asset fallback so a broken <img> never shows an icon */
+  .media-fallback {
+    background-image:
+      radial-gradient(120% 90% at 20% 0%, rgba(124, 92, 255, 0.22), transparent 62%),
+      repeating-linear-gradient(115deg, #101010 0 12px, #0c0c0c 12px 24px);
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    pointer-events: none;
+    opacity: 0.055;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .vignette {
+    background:
+      linear-gradient(to top, rgba(8, 8, 8, 0.96) 2%, rgba(8, 8, 8, 0.55) 34%, transparent 68%),
+      linear-gradient(to right, rgba(8, 8, 8, 0.9), rgba(8, 8, 8, 0.25) 55%, transparent 82%);
+  }
+
+  .scan {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.045) 0 1px,
+      transparent 1px 4px
+    );
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .edge-fade-x {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  @keyframes marquee-x {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .marquee-track {
+    animation: marquee-x 38s linear infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.72);
+    }
+  }
+
+  .animate-pulse-dot {
+    animation: pulse-dot 2.4s var(--ease-snap) infinite;
+  }
+
+  @keyframes scrub {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(400%);
+    }
+  }
+
+  .animate-scrub {
+    animation: scrub 4.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  @keyframes ken-burns {
+    0% {
+      transform: scale(1.06) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: scale(1.16) translate3d(-1.4%, -1.2%, 0);
+    }
+  }
+
+  .animate-ken-burns {
+    animation: ken-burns 26s var(--ease-snap) infinite alternate;
+  }
+}
+
+/* Hide custom cursor chrome on coarse pointers */
+@media (pointer: coarse) {
+  .cursor-chrome {
+    display: none !important;
+  }
+}
+
+/* ---------- Reduced motion: content first, motion off ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tilt,
+  .tilt-z {
+    transform: none !important;
+  }
+
+  .animate-ken-burns,
+  .marquee-track,
+  .animate-pulse-dot,
+  .animate-scrub {
+    animation: none !important;
+  }
+
+  .cursor-chrome {
+    display: none !important;
+  }
+}
